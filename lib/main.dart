@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:taxi_availability/LocationMap.dart';
+import 'package:taxi_availability/Services/TaxiAvailability.dart';
+import 'package:taxi_availability/Services/TaxiAvailabilityAdapter.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,14 +12,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  GoogleMapController mapController;
-
-  final LatLng _center = const LatLng(45.521563, -122.677433);
-
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +26,7 @@ class _MyAppState extends State<MyApp> {
             target: _center,
             zoom: 11.0,
           ),
-        ),
+          ),
       ),
     );
   }
