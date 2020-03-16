@@ -1,30 +1,23 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:taxi_availability/Services/TaxiAvailability.dart';
 import 'package:http/http.dart' as http;
 
 class TaxiAvailabilityAdapter implements TaxiAvailability {
-  StreamController<String> streamController = StreamController();
-  Stream<String> get stream => streamController.stream;
-
-  // void newMessage(int number, String message) {
-  //   final duration = Duration(seconds: number);
-  //   Timer.periodic(duration, (Timer t) => streamController.add(message));
-  // }
+  final String _url = "https://api.data.gov.sg/v1/transport/taxi-availability";
 
   @override
-  List<String> availableTaxis(DateTime time) {
-    // TODO: implement availableTaxis
-    throw UnimplementedError();
+  Future markers(DateTime dateTime) async {
+    print("getting markers");
+    print(DateTime.now());
+    http.Response response = await http.get(_url);
+    Map<String, dynamic> content = json.decode(response.body);
+    print(content);
+    return Future.value(null);
   }
 
-  void initState() {
-    // streamController.stream.listen((messages) => print(messages));
+  void initState() {}
 
-    // newMessage(1, 'You got a message!');
-  }
-
-  void dispose() {
-    streamController.close();
-  }
+  void dispose() {}
 }

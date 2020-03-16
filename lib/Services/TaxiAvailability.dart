@@ -1,3 +1,3 @@
 abstract class TaxiAvailability {
-  List<String> availableTaxis(DateTime time);
+  Future markers(DateTime dateTime);
 }
