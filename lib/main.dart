@@ -20,13 +20,11 @@ class _MyAppState extends State<MyApp> {
           title: Text('Maps Sample App'),
           backgroundColor: Colors.green[700],
         ),
-        body: GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 11.0,
+        body: MultiProvider(providers: [
+          Provider<TaxiAvailability>(
+            create: (_) => TaxiAvailabilityAdapter(),
           ),
-          ),
+        ], child: LocationMap()),
       ),
     );
   }
