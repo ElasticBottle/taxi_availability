@@ -3,17 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 part 'Response.g.dart';
 
 @JsonSerializable()
-class BaseResponse extends Object {
-  @JsonKey(name: "features")
-  final CabDetails cabDetails;
-
-  BaseResponse(this.cabDetails);
-
-  factory BaseResponse.fromJson(Map<String, dynamic> json) =>
-      _$BaseResponseFromJson(json);
-}
-
-@JsonSerializable()
 class CabDetails extends Object {
   @JsonKey(name: "geometry")
   final CabCoordinates cabCoordinates;
@@ -29,7 +18,7 @@ class CabDetails extends Object {
 
 @JsonSerializable()
 class CabCoordinates extends Object {
-  final List<List<int>> coordinates;
+  final List<List<double>> coordinates;
 
   CabCoordinates(this.coordinates);
 
@@ -42,10 +31,10 @@ class CabInfo extends Object {
   final String timestamp;
 
   @JsonKey(name: "taxi_count")
-  final String taxiCount;
+  final int taxiCount;
 
   @JsonKey(name: "api_info")
-  final Status status;
+  final ApiStatus status;
 
   CabInfo(this.timestamp, this.taxiCount, this.status);
 
@@ -54,11 +43,12 @@ class CabInfo extends Object {
 }
 
 @JsonSerializable()
-class Status extends Object {
+class ApiStatus extends Object {
   @JsonKey(name: "status")
   final String health;
 
-  Status(this.health);
+  ApiStatus(this.health);
 
-  factory Status.fromJson(Map<String, dynamic> json) => _$StatusFromJson(json);
+  factory ApiStatus.fromJson(Map<String, dynamic> json) =>
+      _$ApiStatusFromJson(json);
 }

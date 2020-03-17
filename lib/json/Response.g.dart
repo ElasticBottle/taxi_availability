@@ -6,19 +6,6 @@ part of 'Response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BaseResponse _$BaseResponseFromJson(Map<String, dynamic> json) {
-  return BaseResponse(
-    json['features'] == null
-        ? null
-        : CabDetails.fromJson(json['features'] as Map<String, dynamic>),
-  );
-}
-
-Map<String, dynamic> _$BaseResponseToJson(BaseResponse instance) =>
-    <String, dynamic>{
-      'features': instance.cabDetails,
-    };
-
 CabDetails _$CabDetailsFromJson(Map<String, dynamic> json) {
   return CabDetails(
     json['geometry'] == null
@@ -39,7 +26,7 @@ Map<String, dynamic> _$CabDetailsToJson(CabDetails instance) =>
 CabCoordinates _$CabCoordinatesFromJson(Map<String, dynamic> json) {
   return CabCoordinates(
     (json['coordinates'] as List)
-        ?.map((e) => (e as List)?.map((e) => e as int)?.toList())
+        ?.map((e) => (e as List)?.map((e) => (e as num)?.toDouble())?.toList())
         ?.toList(),
   );
 }
@@ -52,10 +39,10 @@ Map<String, dynamic> _$CabCoordinatesToJson(CabCoordinates instance) =>
 CabInfo _$CabInfoFromJson(Map<String, dynamic> json) {
   return CabInfo(
     json['timestamp'] as String,
-    json['taxi_count'] as String,
+    json['taxi_count'] as int,
     json['api_info'] == null
         ? null
-        : Status.fromJson(json['api_info'] as Map<String, dynamic>),
+        : ApiStatus.fromJson(json['api_info'] as Map<String, dynamic>),
   );
 }
 
@@ -65,12 +52,12 @@ Map<String, dynamic> _$CabInfoToJson(CabInfo instance) => <String, dynamic>{
       'api_info': instance.status,
     };
 
-Status _$StatusFromJson(Map<String, dynamic> json) {
-  return Status(
+ApiStatus _$ApiStatusFromJson(Map<String, dynamic> json) {
+  return ApiStatus(
     json['status'] as String,
   );
 }
 
-Map<String, dynamic> _$StatusToJson(Status instance) => <String, dynamic>{
+Map<String, dynamic> _$ApiStatusToJson(ApiStatus instance) => <String, dynamic>{
       'status': instance.health,
     };
