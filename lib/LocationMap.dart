@@ -30,16 +30,40 @@ class _LocationMapState extends State<LocationMap> {
     return StreamBuilder<Set<Marker>>(
       stream: manager.taxiMarkers,
       builder: (context, snapshot) {
-        print("streaming");
-        Set<Marker> _markers = snapshot.data;
-        return GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _initialPosition,
-            zoom: _initialZoom,
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return Center(
+              child: Text(
+                "There seems to be no Internet connection :(",
+              ),
+            );
+            break;
+          case ConnectionState.waiting:
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+            break;
+          case ConnectionState.active:
+            Set<Marker> _markers = snapshot.data;
+            print(_markers);
+            return GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: _initialPosition,
+                zoom: _initialZoom,
+              ),
+              compassEnabled: true,
+              markers: _markers,
+            );
+            break;
+          case ConnectionState.done:
+            print("done streaming");
+            break;
+        }
+        return Center(
+          child: Text(
+            "Something went wrong",
           ),
-          compassEnabled: true,
-          markers: _markers,
         );
       },
     );
