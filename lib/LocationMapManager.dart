@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxi_availability/Services/TaxiAvailability.dart';
 
@@ -30,10 +31,18 @@ Set<Marker> markersFromList(List<List<double>> latlong) {
 class LocationMapManager {
   final int _delay = 60;
   TaxiAvailability taxi;
+  BitmapDescriptor _taxiMovingIcon;
+  BitmapDescriptor _taxiStoppedIcon;
 
   LocationMapManager(this.taxi);
 
   Stream<Set<Marker>> get taxiMarkers async* {
+    _taxiMovingIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/images/taxi_moving_icon.png');
+    _taxiStoppedIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/images/taxi_stopped_icon.png');
     while (true) {
       await Future.delayed(Duration(seconds: _delay));
       List<List<double>> latlong = await taxi.markers(DateTime.now());
@@ -48,6 +57,7 @@ class LocationMapManager {
               latlong[i][1],
               latlong[i][0],
             ),
+            icon: _taxiMovingIcon,
             // infoWindow:
             //     InfoWindow(title: "InfoWindow", snippet: 'This is a snipper'),
             // onTap: () {
