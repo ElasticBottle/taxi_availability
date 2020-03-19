@@ -8,12 +8,12 @@ import 'package:taxi_availability/json/Response.dart';
 class TaxiAvailabilityAdapter implements TaxiAvailability {
   final String _url = "https://api.data.gov.sg/v1/transport/taxi-availability";
   final int _success = 200;
-  final int _UTC8 = 8;
+  final int _utc8 = 8;
   @override
   Future markers(DateTime dateTime) async {
     print("getting markers");
     String timeToRequest = dateTime
-        .add(Duration(hours: _UTC8))
+        .add(Duration(hours: _utc8))
         .toIso8601String()
         .substring(0, 19)
         .replaceAll(":", "%3A");

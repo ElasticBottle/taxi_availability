@@ -28,7 +28,7 @@ Set<Marker> markersFromList(List<List<double>> latlong) {
 }
 
 class LocationMapManager {
-  final int _delay = 15;
+  final int _delay = 60;
   TaxiAvailability taxi;
 
   LocationMapManager(this.taxi);
@@ -41,8 +41,6 @@ class LocationMapManager {
       Set<Marker> _markers = Set();
       int length = latlong.length;
       for (int i = 0; i < length; i++) {
-        // for (List<double> coordinate in latlong) {
-        print("adding marker");
         _markers.add(
           Marker(
             markerId: MarkerId("Marker$i"),
