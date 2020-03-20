@@ -21,9 +21,10 @@ class _LocationMapState extends State<LocationMap> {
   }
 
   void initState() {
+    super.initState();
     manager = LocationMapManager(
         Provider.of<TaxiAvailability>(context, listen: false));
-    super.initState();
+    manager.init();
   }
 
   @override
