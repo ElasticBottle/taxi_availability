@@ -24,7 +24,8 @@ class TaxiAvailabilityAdapter implements TaxiAvailability {
     try {
       response = await http.get(getUrl);
     } catch (e) {
-      throw http.ClientException;
+      print(e.toString());
+      print("Check your devices internet connection and try again!");
     }
     if (response.statusCode == _success) {
       Map<String, dynamic> content = json.decode(response.body);
