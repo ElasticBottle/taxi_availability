@@ -17,7 +17,7 @@ import 'package:taxi_availability/Services/TaxiAvailability.dart';
 
 class LocationMapManager {
   static const maxZoom = 18;
-  static const thumbnailWidth = 60;
+  static const thumbnailWidth = 80;
   final int _delay = 30;
 
   // Current pool of available media that can be displayed on the map.
@@ -46,7 +46,7 @@ class LocationMapManager {
   /// Keep track of the current Google Maps zoom level.
   var _currentZoom = 12; // As per _initialCameraPosition in main.dart
 
-  /// Fluster!
+  /// Fluster
   Fluster<MapMarker> _fluster;
 
   LocationMapManager(this.taxi)
@@ -70,6 +70,7 @@ class LocationMapManager {
     });
   }
 
+  /// Request the user for permission to access phone's location services
   void _requestUserLocationPermission() async {
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
@@ -90,6 +91,7 @@ class LocationMapManager {
     }
   }
 
+  /// Moves camera position to user's current location if there is one.
   void animateToUser(GoogleMapController mapController, double currentZoom) {
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
       target: LatLng(currentLocation.latitude, currentLocation.longitude),
@@ -104,6 +106,7 @@ class LocationMapManager {
     _cameraZoomController.close();
   }
 
+  /// Initiates and rebuilds the fluster instance every _delay seconds base on the new data points
   _buildMediaPool() async {
     while (true) {
       List<List<double>> response;
@@ -119,7 +122,7 @@ class LocationMapManager {
           minZoom: 0,
           maxZoom: maxZoom,
           radius: thumbnailWidth ~/ 2,
-          extent: 1024,
+          extent: 512,
           nodeSize: 32,
           points: _mediaPool.values.toList(),
           createCluster:
@@ -139,6 +142,7 @@ class LocationMapManager {
     }
   }
 
+  /// Converts the response from the api call to Map<String, MapMarker> needed for fluster instance
   _toMapStringMapMarker(List<List<double>> response) {
     Map<String, MapMarker> _markers = Map<String, MapMarker>();
     int length = response.length;
@@ -155,6 +159,7 @@ class LocationMapManager {
     return _markers;
   }
 
+  /// displayes the approapriate marker base one whether a not the point is clustered
   _displayMarkers(Map pool) async {
     if (_fluster == null) {
       return;
@@ -190,6 +195,7 @@ class LocationMapManager {
     addMarkers(markers);
   }
 
+  /// create Icon for Marker based on a cluster
   Future<BitmapDescriptor> _createClusterBitmapDescriptor(
       MapMarker feature) async {
     MapMarker childMarker = _mediaPool[feature.childMarkerId];
@@ -218,6 +224,7 @@ class LocationMapManager {
     return BitmapDescriptor.fromBytes(png);
   }
 
+  /// Create icon for Marker based on an individual point
   Future<BitmapDescriptor> _createImageBitmapDescriptor(
       String thumbnailSrc) async {
     var resized =
@@ -232,6 +239,7 @@ class LocationMapManager {
     return BitmapDescriptor.fromBytes(png);
   }
 
+  /// Loads an image of given width and height from imageFile location
   Future<images.Image> _createImage(
       String imageFile, int width, int height) async {
     ByteData imageData;
